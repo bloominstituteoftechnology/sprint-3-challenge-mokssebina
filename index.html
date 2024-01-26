@@ -18,7 +18,6 @@
     .widget p {
       font-style: italic;
     }
-
   </style>
 </head>
 
@@ -59,6 +58,95 @@
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
 
+      constructor(...ints) {
+        this.ints = ints
+      }
+
+      getAll() {
+        return this.ints
+      }
+
+      getEvens() {
+
+        let arr = []
+
+        for (let i = 0; i < this.ints.length; i++) {
+          let item = this.ints[i]
+          if (item % 2 === 0) {
+            arr.push(item)
+          }
+        }
+
+        return arr
+      }
+
+      getNegatives() {
+
+        let arr = []
+
+        for (let i = 0; i < this.ints.length; i++) {
+          let item = this.ints[i]
+          if (item < 0) {
+            arr.push(item)
+          }
+        }
+
+        return arr
+      }
+
+      getAllSquared() {
+
+        let arr = []
+
+        for (let i = 0; i < this.ints.length; i++) {
+          let item = this.ints[i] ** 2
+
+          arr.push(item)
+        }
+
+        return arr
+      }
+
+      pop() {
+
+        let number
+
+        return number = this.ints.pop()
+      }
+
+      push() {
+
+        let arr = this.ints
+
+        arr.push(4)
+
+        return arr
+      }
+
+      getEveryNth(n) {
+
+        let arr = []
+
+        for (let i = 0; i < this.ints.length; i += n) {
+          let item = this.ints[i]
+          arr.push(item)
+        }
+
+        return arr
+      }
+
+      getAllReversed() {
+
+        let arr = []
+
+        for (let i = this.ints.length - 1; i > -1; i--) {
+          let item = this.ints[i]
+          arr.push(item)
+        }
+
+        return arr
+      }
+
     }
 
     // 👉 CHALLENGE 2 NerfGun
@@ -76,6 +164,50 @@
       //      * When engaging the safety, return "Safety enabled!"
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
+
+      constructor(bullets) {
+        this.bullets = bullets
+      }
+      capacity = this.bullets
+      rounds = this.bullets
+      safety = true
+
+      shoot() {
+        if (this.bullets > 0 && !this.safety) {
+          this.bullets--
+          return "Bang!"
+        } else {
+          return "Click!"
+        }
+      }
+
+      reload(number) {
+
+        if (!(number > 0)) {
+          return "Error reloading!"
+        } else {
+          if (this.bullets + number > this.capacity) {
+            this.bullets = this.capacity
+          }
+
+          return `${rounds} projectiles left!`
+        }
+
+      }
+
+      toggleSafety() {
+
+        if (this.safety) {
+          this.safety = !this.safety
+
+          return "Safety disabled!"
+        } else {
+          this.safety = this.safety
+
+          return "Safety enabled!"
+        }
+
+      }
 
     }
 
