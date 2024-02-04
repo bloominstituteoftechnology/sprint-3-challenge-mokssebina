@@ -116,11 +116,10 @@
 
       push() {
 
-        let arr = this.ints
+        this.ints = [...this.ints,4]
 
-        arr.push(4)
+        return this.ints 
 
-        return arr
       }
 
       getEveryNth(n) {
