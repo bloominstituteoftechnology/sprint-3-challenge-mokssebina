@@ -165,48 +165,37 @@
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
 
-      constructor(bullets) {
-        this.bullets = bullets
+      constructor(totalProjectiles) {
+        this.maxCapacity = totalProjectiles;
+        this.currentCapacity = totalProjectiles;
+        this.safetyOn = true;
       }
-      capacity = this.bullets
-      rounds = this.bullets
-      safety = true
 
       shoot() {
-        if (this.bullets > 0 && !this.safety) {
-          this.bullets--
-          return "Bang!"
-        } else if (this.bullets === 0 || this.safety) {
-          return "Click!"
+        if (this.currentCapacity > 0 && !this.safetyOn) {
+          this.currentCapacity--;
+          return "Bang!";
+        } else {
+          return "Click!";
         }
       }
 
-      reload(number) {
+      reload(amount) {
+        let final
 
-        if (number <= 0) {
-          return "Error reloading!"
-        } else {
-          if (this.bullets + number > this.capacity) {
-            this.bullets = this.capacity
-          }
-
-          return `${rounds} projectiles left!`
+        if (typeof amount !== 'number' || amount <= 0) {
+          return "Error reloading!";
         }
 
+        final = this.currentCapacity + amount
+
+        this.currentCapacity = Math.min(this.maxCapacity, this.currentCapacity + amount);
+        return `${this.currentCapacity} projectiles left!`;
       }
 
       toggleSafety() {
-
-        if (this.safety) {
-          this.safety = !this.safety
-
-          return "Safety disabled!"
-        } else {
-          this.safety = this.safety
-
-          return "Safety enabled!"
-        }
-
+        this.safetyOn = !this.safetyOn;
+        return this.safetyOn ? "Safety enabled!" : "Safety disabled!";
       }
 
     }
@@ -230,21 +219,23 @@
       constructor(string, characters) {
         this.string = string;
         this.characters = characters;
+        this.currentPage = 0;
       }
 
       next() {
-        let final = ''
+        const start = this.currentPage * this.characters
+        const end = start + this.characters
+        const nextPage = this.string.slice(start, end)
 
-        for (let i = 0; i < this.string.length; i += this.characters) {
-
-          console.log(i)
-
-          
+        if (nextPage.length > 0) {
+          this.currentPage++
+          return nextPage
+        } else {
+          return null
         }
-
-        //return final
-
       }
+
+
     }
 
     // 👉 CHALLENGE 4 AntFarm
@@ -280,14 +271,46 @@
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
 
-      constructor(...names) {
-        this.names = names
+      constructor(...ants) {
+        this.ants = ants.map((name) => ({ name: name, health: 100 }))
+      }
+
+      
+      work() {
+        if (this.ants.length <= 0) {
+          return "No ants here. Did you work them to death?";
+        }
+
+        // Update ants' health with consistent behavior for both positive and negative values
+        const updatedAnts = this.ants.map((ant) => ({
+          ...ant,
+          health: Math.max(0, ant.health - 20), // Ensure health stays within 0-100 range
+        }));
+
+        // Remove deceased ants after health update to avoid incorrect removal order
+        this.ants = updatedAnts.filter((ant) => ant.health > 0);
+
+        return `${updatedAnts.length} ants starting work!`;
+      }
+
+
+      feed(name) {
+        const found = this.ants.filter((item) => {
+          return item.name === name
+        })
+
+        if (found.length > 0) {
+          found.map((item) => { item.health += 15 })
+          return "Yum!";
+        } else {
+          return `${name} not found!`;
+        }
       }
 
     }
 
     // 🧪 TESTS, do not make any changes below this line ===================
-    // 🧪 TESTS, do not make any changes below this line ===================
+    // 🧪 TESTS, do nost make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
     globalThis.challengeVersion = 1
     globalThis.Integers = Integers
