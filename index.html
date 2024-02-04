@@ -116,10 +116,11 @@
 
       push() {
 
-        this.ints = [...this.ints,4]
+        this.ints = this.ints
 
-        return this.ints 
+        this.ints.push(4)
 
+        return this.ints
       }
 
       getEveryNth(n) {
